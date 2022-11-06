@@ -77,21 +77,19 @@ app.post('/api/persons', (request, response) => {
   
   if(!body.name) errors.push('name missing')
   if(!body.number) errors.push('number missing')
-  if(persons.filter( person => person.name === body.name ).length) errors.push('person exists')
 
   if(errors.length > 0) {
     return response.status(400).json(errors)
   }
 
-  const person = {
-    id: generateId(),
+  const person = new Person({
     name: body.name,
     number: body.number
-  }
+  })
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
 })
 
 const PORT = process.env.PORT;
