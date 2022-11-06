@@ -18,7 +18,13 @@ mongoose.connect(url)
       minLength: 3,
       required: true
     },
-    number: String
+    number: {
+      type: String,
+      validate: {
+        validator: v => /^\d{2,3}-\d+$/.test(v),
+        message: props => `${props.value} is not a valid phone number!`
+      }
+    }
   })
 
   personSchema.set('toJSON', {
