@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 if (process.argv.length < 3) {
   console.log('Please provide the password as an argument: node mongo.js <password>')
@@ -21,36 +21,36 @@ if(process.argv.length == 5) {
   const number = process.argv[4]
 
   mongoose
-  .connect(url)
-  .then((result) => {
-    console.log('connected')
+    .connect(url)
+    .then(() => {
+      console.log('connected')
 
-    const person = new Person({
-      name: name,
-      number: number 
+      const person = new Person({
+        name: name,
+        number: number 
+      })
+
+      return person.save()
     })
-
-    return person.save()
-  })
-  .then(() => {
-    console.log(`added ${name} number ${number} to phonebook`)
-    return mongoose.connection.close()
-  })
-  .catch((err) => console.log(err))
+    .then(() => {
+      console.log(`added ${name} number ${number} to phonebook`)
+      return mongoose.connection.close()
+    })
+    .catch((err) => console.log(err))
 } 
 else {
   mongoose
-  .connect(url)
-  .then((result) => {
-    console.log('connected')
+    .connect(url)
+    .then(() => {
+      console.log('connected')
 
-    Person.find({}).then(result => {
-      console.log('phonebook:')
-      result.forEach(person => {
-        console.log(person.name, person.number)
+      Person.find({}).then(result => {
+        console.log('phonebook:')
+        result.forEach(person => {
+          console.log(person.name, person.number)
+        })
+        mongoose.connection.close()
       })
-      mongoose.connection.close()
     })
-  })
-  .catch((err) => console.log(err))
+    .catch((err) => console.log(err))
 }
